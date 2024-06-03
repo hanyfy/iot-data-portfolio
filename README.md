@@ -3,7 +3,7 @@ Une solution innovante d'Internet des Objets (IoT) pour surveiller les animaux e
 
 # Portfolio IoT Project
 
-![Aperçu du projet](images/apercu_projet.png)
+![Aperçu du projet](images/0-ihm.PNG)
 
 ## Description
 Ce projet IoT est une solution innovante d'Internet des Objets (IoT) conçue pour connecter et surveiller les animaux ainsi que leur état de santé. Le système permet de suivre en temps réel diverses données et d'assurer une gestion efficace de la santé animale.
