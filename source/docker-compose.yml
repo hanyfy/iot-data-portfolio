@@ -1,0 +1,29 @@
+version: '3'
+services:
+  ihm:
+    build: ./IHM
+    container_name: django_ihm_webhook_control
+    ports:
+      - "$DJANGO_PORT:$DJANGO_PORT"
+    environment:
+      - DEBUG=True
+
+  fastapi:
+    build: ./API
+    container_name: fastapi_data_pipeline
+    ports:
+      - "$API_PORT:$API_PORT"
+    environment:
+      - DEBUG=True
+    depends_on:
+      - postgres
+      
+  postgres:
+    image: postgres:16.0
+    container_name: postgres_data
+    environment:
+      - POSTGRES_DB=iot_area
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=F7wB2nK9v
+    ports:
+      - "$BDD_PORT_EXPOSE:$BDD_PORT"

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>Connexion</title>
+    <link rel="stylesheet" href="{% static 'webhook/css/main/app.css' %}">
+    <link rel="stylesheet" href="{% static 'webhook/css/pages/auth.css' %}">
+</head>
+
+
+
+
+<body>
+
+
+    <div class="row">&nbsp;</div><div class="row">&nbsp;</div><div class="row">&nbsp;</div>
+    <div class="row">
+    <div class="col-md-4">&nbsp;</div>
+    <div class="col-md-4">
+        <h2>Connexion</h2>
+        <div class="row">&nbsp;</div>
+
+        <form  action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group position-relative">
+                    <input type="text" class="form-control form-control-xl" placeholder="login"  id="username" name="username" required>
+                    
+                </div>
+                <div class="form-group position-relative">
+                    <input type="password" class="form-control form-control-xl" placeholder="mot de passe"  id="password" name="password" required>
+                
+                </div>
+                
+                <input class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="submit" value="Se connecter">
+            </form>
+            <div class="row">&nbsp;</div>
+            <div class="col-12 col-md-12">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <span style="color:red;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+    
+
+
+</body>
+</html>
+
+

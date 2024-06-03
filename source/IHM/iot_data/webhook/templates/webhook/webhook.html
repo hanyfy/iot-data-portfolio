@@ -1,0 +1,2043 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webhook - API CALCUL</title>
+    <!-- Inclure les fichiers CSS de Bootstrap -->
+    <link rel="stylesheet" href="{% static 'webhook/css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'webhook/css/main/app.css' %}">
+    <link rel="stylesheet" href="{% static 'webhook/css/main/app-dark.css' %}">
+    <!--<link rel="shortcut icon" href="{% static 'webhook/images/logo/favicon.svg' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'webhook/images/logo/favicon.png' %}" type="image/png">-->
+    
+<link rel="stylesheet" href="{% static 'webhook/extensions/simple-datatables/style.css' %}">
+<link rel="stylesheet" href="{% static 'webhook/css/pages/simple-datatables.css' %}">
+<link rel="stylesheet" href="{% static 'webhook/extensions/@fortawesome/fontawesome-free/css/all.min.css' %}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+</head>
+<body>
+
+    <div class="row">
+    <div class="col-md-11"></div>
+    <nav class="col-md-1">
+        <!-- Autres éléments de navigation -->
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Déconnexion</a>
+        {% endif %}
+    </nav>
+    </div>
+
+        <div id="app">
+        
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+
+
+
+
+<div class="page-heading col-md-12">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Webhook</h3>
+                        <p class="text-subtitle text-muted">Configuration Api Back webhook alert</p>
+
+                        
+
+                    </div>
+
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="">Webhook</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                            </ol>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card ">
+                    
+
+
+                    <div class="card-header ">
+                        
+                        <div class="">Listes des API Back webhook</div>
+                        <div class="d-flex justify-content-end">
+                            
+                            <button type="button" class="btn btn-primary btn-lg " data-toggle="modal" data-target="#api-webhook" style="font-size: 12px;">
+                                <i class="fas fa-plus mr-2"></i> API
+                            </button>
+                        </div>
+                        
+                        
+
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-striped" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Url</th>
+                                    <th>Status</th>
+                                    <th>Env</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for geo in data_webhook %}
+                                <tr>
+                                    <td>{{ geo.name }}</td>
+                                    <td>{{ geo.url }}</td>
+                                    <td>
+                                        {% if geo.status == 1 %}
+                                        <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ geo.env }}</td>
+                                    <td><i class="fas fa-edit"  data-toggle="modal" data-target="#edit-wh-{{ geo.id }}"  style="cursor: pointer;"></i>
+                                    </td>
+
+                                    <td><i class="fas fa-trash"   data-toggle="modal" data-target="#del-wh-{{ geo.id }}" style="cursor: pointer;color: #ff7682;"></i> 
+                                    </td>
+                                </tr>
+
+
+                                <!-- Modal -->
+        <div class="modal fade" id="edit-wh-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog"  style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-default">
+                        <h5 class="modal-title" id="exampleModalLabel">Webhook</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'upd_webhook' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+
+                        
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_wh_{{ geo.id }}">
+                                                <option value="TEST1" {% if geo.env == 'TEST1' %}selected="selected"{% endif %}> TEST1 </option>
+                                                <option value="TEST2"  {% if geo.env == 'TEST2' %}selected="selected"{% endif %}> TEST2 </option>
+                                                <option value="STAGING" {% if geo.env == 'STAGING' %}selected="selected"{% endif %}> STAGING </option>
+                                                <option value="PREPROD" {% if geo.env == 'PREPROD' %}selected="selected"{% endif %}> PREPROD </option>
+                                                <option value="PROD" {% if geo.env == 'PROD' %}selected="selected"{% endif %}> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh_{{ geo.id }}" value="{{ geo.name }}">
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_wh_{{ geo.id }}" value="{{ geo.description }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_wh_{{ geo.id }}"  value="{{ geo.url }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_wh_{{ geo.id }}"  value="{{ geo.login }}">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_wh_{{ geo.id }}"  value="{{ geo.password }}">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_wh_{{ geo.id }}"  {% if geo.status == 1 %}checked{% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_wh_{{ geo.id }}" value="{{ geo.hk1 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_wh_{{ geo.id }}" value="{{ geo.hv1 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_wh_{{ geo.id }}" value="{{ geo.hk2 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_wh_{{ geo.id }}" value="{{ geo.hv2 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_wh_{{ geo.id }}" value="{{ geo.hk3 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_wh_{{ geo.id }}" value="{{ geo.hv3 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_wh_{{ geo.id }}" value="{{ geo.hk4 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_wh_{{ geo.id }}" value="{{ geo.hv4 }}">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+        <div class="modal fade" id="del-wh-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title" id="exampleModalLabel">Webhook</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'del_webhook' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+                        
+                        Êtes-vous sûr de vouloir supprimer "{{ geo.name }} : {{ geo.url }}" ?
+
+                        
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-danger" type="submit" value="supprimer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+
+                                {% endfor %}
+
+
+
+
+                                
+                            </tbody>
+                        </table>
+
+
+
+
+                    </div>
+                </div>
+
+            </section>
+
+        
+        </div><!-- end left -->
+
+        <div class="col-md-6">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Geofencing</h3>
+                        <p class="text-subtitle text-muted">Configuration Api Back Geofencing</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="">Geofencing</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        Listes des API Back geofencing
+                        <div class="d-flex justify-content-end">
+                            
+                            <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#api-geofencing" style="font-size: 12px;">
+                                <i class="fas fa-plus mr-2"></i> API
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="table2">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Url</th>
+                                    <th>Status</th>
+                                    <th>Env</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for geo in data_geofencing %}
+                                <tr>
+                                    <td>{{ geo.name }}</td>
+                                    <td>{{ geo.url }}</td>
+                                    <td>
+                                        {% if geo.status == 1 %}
+                                        <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ geo.env }}</td>
+                                    <td><i class="fas fa-edit"  data-toggle="modal" data-target="#edit-gf-{{ geo.id }}"  style="cursor: pointer;"></i>
+                                    </td>
+
+                                    <td><i class="fas fa-trash"   data-toggle="modal" data-target="#del-gf-{{ geo.id }}" style="cursor: pointer;color: #ff7682;"></i> 
+                                    </td>
+                                </tr>
+
+
+                                                                <!-- Modal -->
+        <div class="modal fade" id="edit-gf-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog"  style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title" id="exampleModalLabel">Geofencing</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'upd_geofencing' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_gf_{{ geo.id }}">
+                                                <option value="TEST1" {% if geo.env == 'TEST1' %}selected="selected"{% endif %}> TEST1 </option>
+                                                <option value="TEST2"  {% if geo.env == 'TEST2' %}selected="selected"{% endif %}> TEST2 </option>
+                                                <option value="STAGING" {% if geo.env == 'STAGING' %}selected="selected"{% endif %}> STAGING </option>
+                                                <option value="PREPROD" {% if geo.env == 'PREPROD' %}selected="selected"{% endif %}> PREPROD </option>
+                                                <option value="PROD" {% if geo.env == 'PROD' %}selected="selected"{% endif %}> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_gf_{{ geo.id }}" value="{{ geo.name }}">
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_gf_{{ geo.id }}" value="{{ geo.description }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_gf_{{ geo.id }}"  value="{{ geo.url }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_gf_{{ geo.id }}"  value="{{ geo.login }}">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_gf_{{ geo.id }}"  value="{{ geo.password }}">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_gf_{{ geo.id }}"  {% if geo.status == 1 %}checked{% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_gf_{{ geo.id }}" value="{{ geo.hk1 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_gf_{{ geo.id }}" value="{{ geo.hv1 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_gf_{{ geo.id }}" value="{{ geo.hk2 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_gf_{{ geo.id }}" value="{{ geo.hv2 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_gf_{{ geo.id }}" value="{{ geo.hk3 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_gf_{{ geo.id }}" value="{{ geo.hv3 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_gf_{{ geo.id }}" value="{{ geo.hk4 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_gf_{{ geo.id }}" value="{{ geo.hv4 }}">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+        <div class="modal fade" id="del-gf-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title" id="exampleModalLabel">Geofencing</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'del_geofencing' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+                        
+                        Êtes-vous sûr de vouloir supprimer "{{ geo.name }} : {{ geo.url }}" ?
+
+                        
+
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-danger" type="submit" value="supprimer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+                
+
+        </div><!-- end right -->
+
+    </div><!-- end row -->
+
+    <!-- BEGIN ROW tableau/liste api alpes eco V2 -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Telemetry</h3>
+                        <p class="text-subtitle text-muted">Configuration Api Back historiques alert</p>
+
+                        
+
+                    </div>
+
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="">Telemetry</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                            </ol>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card ">
+                    
+
+
+                    <div class="card-header ">
+                        
+                        <div class="">Listes des API Back telemetry</div>
+                        <div class="d-flex justify-content-end">
+                            
+                            <button type="button" class="btn btn-primary btn-lg " data-toggle="modal" data-target="#api-telemetry" style="font-size: 12px;">
+                                <i class="fas fa-plus mr-2"></i> API
+                            </button>
+                        </div>
+                        
+                        
+
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-striped" id="table3">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Url</th>
+                                    <th>Status</th>
+                                    <th>Env</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for geo in data_telemetry %}
+                                <tr>
+                                    <td>{{ geo.name }}</td>
+                                    <td>{{ geo.url }}</td>
+                                    <td>
+                                        {% if geo.status == 1 %}
+                                        <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ geo.env }}</td>
+                                    <td><i class="fas fa-edit"  data-toggle="modal" data-target="#edit-tel-{{ geo.id }}"  style="cursor: pointer;"></i>
+                                    </td>
+
+                                    <td><i class="fas fa-trash"   data-toggle="modal" data-target="#del-tel-{{ geo.id }}" style="cursor: pointer;color: #ff7682;"></i> 
+                                    </td>
+                                </tr>
+
+
+                                <!-- Modal -->
+        <div class="modal fade" id="edit-tel-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog"  style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-default">
+                        <h5 class="modal-title" id="exampleModalLabel">Telemetry</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'upd_telemetry' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+
+                        
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_tel_{{ geo.id }}">
+                                                <option value="TEST1" {% if geo.env == 'TEST1' %}selected="selected"{% endif %}> TEST1 </option>
+                                                <option value="TEST2"  {% if geo.env == 'TEST2' %}selected="selected"{% endif %}> TEST2 </option>
+                                                <option value="STAGING" {% if geo.env == 'STAGING' %}selected="selected"{% endif %}> STAGING </option>
+                                                <option value="PREPROD" {% if geo.env == 'PREPROD' %}selected="selected"{% endif %}> PREPROD </option>
+                                                <option value="PROD" {% if geo.env == 'PROD' %}selected="selected"{% endif %}> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_tel_{{ geo.id }}" value="{{ geo.name }}">
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_tel_{{ geo.id }}" value="{{ geo.description }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_tel_{{ geo.id }}"  value="{{ geo.url }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_tel_{{ geo.id }}"  value="{{ geo.login }}">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_tel_{{ geo.id }}"  value="{{ geo.password }}">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_tel_{{ geo.id }}"  {% if geo.status == 1 %}checked{% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_tel_{{ geo.id }}" value="{{ geo.hk1 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_tel_{{ geo.id }}" value="{{ geo.hv1 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_tel_{{ geo.id }}" value="{{ geo.hk2 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_tel_{{ geo.id }}" value="{{ geo.hv2 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_tel_{{ geo.id }}" value="{{ geo.hk3 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_tel_{{ geo.id }}" value="{{ geo.hv3 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_tel_{{ geo.id }}" value="{{ geo.hk4 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_tel_{{ geo.id }}" value="{{ geo.hv4 }}">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+        <div class="modal fade" id="del-tel-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title" id="exampleModalLabel">Telemetry</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'del_telemetry' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+                        
+                        Êtes-vous sûr de vouloir supprimer "{{ geo.name }} : {{ geo.url }}" ?
+
+                        
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-danger" type="submit" value="supprimer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+
+                                {% endfor %}
+
+
+
+
+                                
+                            </tbody>
+                        </table>
+
+
+
+
+                    </div>
+                </div>
+
+            </section>
+
+        
+        </div><!-- end left -->
+
+        <div class="col-md-6">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Analyses</h3>
+                        <p class="text-subtitle text-muted">Configuration Api Back Analyses alert</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="">Analyses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        Listes des API Back Analyses
+                        <div class="d-flex justify-content-end">
+                            
+                            <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#api-analysis" style="font-size: 12px;">
+                                <i class="fas fa-plus mr-2"></i> API
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="table4">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Url</th>
+                                    <th>Status</th>
+                                    <th>Env</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for geo in data_analysis %}
+                                <tr>
+                                    <td>{{ geo.name }}</td>
+                                    <td>{{ geo.url }}</td>
+                                    <td>
+                                        {% if geo.status == 1 %}
+                                        <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ geo.env }}</td>
+                                    <td><i class="fas fa-edit"  data-toggle="modal" data-target="#edit-ana-{{ geo.id }}"  style="cursor: pointer;"></i>
+                                    </td>
+
+                                    <td><i class="fas fa-trash"   data-toggle="modal" data-target="#del-ana-{{ geo.id }}" style="cursor: pointer;color: #ff7682;"></i> 
+                                    </td>
+                                </tr>
+
+
+                                                                <!-- Modal -->
+        <div class="modal fade" id="edit-ana-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog"  style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title" id="exampleModalLabel">Analyses</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'upd_analysis' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_ana_{{ geo.id }}">
+                                                <option value="TEST1" {% if geo.env == 'TEST1' %}selected="selected"{% endif %}> TEST1 </option>
+                                                <option value="TEST2"  {% if geo.env == 'TEST2' %}selected="selected"{% endif %}> TEST2 </option>
+                                                <option value="STAGING" {% if geo.env == 'STAGING' %}selected="selected"{% endif %}> STAGING </option>
+                                                <option value="PREPROD" {% if geo.env == 'PREPROD' %}selected="selected"{% endif %}> PREPROD </option>
+                                                <option value="PROD" {% if geo.env == 'PROD' %}selected="selected"{% endif %}> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_ana_{{ geo.id }}" value="{{ geo.name }}">
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_ana_{{ geo.id }}" value="{{ geo.description }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_ana_{{ geo.id }}"  value="{{ geo.url }}">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_ana_{{ geo.id }}"  value="{{ geo.login }}">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_ana_{{ geo.id }}"  value="{{ geo.password }}">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_ana_{{ geo.id }}"  {% if geo.status == 1 %}checked{% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_ana_{{ geo.id }}" value="{{ geo.hk1 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_ana_{{ geo.id }}" value="{{ geo.hv1 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_ana_{{ geo.id }}" value="{{ geo.hk2 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_ana_{{ geo.id }}" value="{{ geo.hv2 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_ana_{{ geo.id }}" value="{{ geo.hk3 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_ana_{{ geo.id }}" value="{{ geo.hv3 }}">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_ana_{{ geo.id }}" value="{{ geo.hk4 }}">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_ana_{{ geo.id }}" value="{{ geo.hv4 }}">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+        <div class="modal fade" id="del-ana-{{ geo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title" id="exampleModalLabel">Analyses</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'del_analysis' geo.id %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+                        
+                        Êtes-vous sûr de vouloir supprimer "{{ geo.name }} : {{ geo.url }}" ?
+
+                        
+
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-danger" type="submit" value="supprimer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+                
+
+        </div><!-- end right -->
+
+    </div><!-- end row -->
+    <!-- END ROW tableau/liste api alpes eco V2 -->
+
+
+    <div class="row" ><!-- beg row docs-->
+        <div class="col-md-6" >
+            <div class="row" style="height: 1600px;">
+            <div id="container-json">
+                <h3>Webhook</h3>
+                <h6>Ici, L'API devrait être configurée avec la méthode POST.</h6>
+                <h6>Données JSON renvoyées par le webhook.</h6>
+                <pre id="json-display"></pre>
+            </div>
+
+            <script>
+                // Exemple de données JSON
+                var jsonData = [
+                      {
+                        "date_heure": "2023-08-29 19:56:02",
+                        "name" : "P MOV B02683",
+                        "type": "Tag",
+                        "sn": "529221",
+                        "iccid": "89410114328701839535",
+                        "mac_address": "C1:92:09:30:B8:5A",
+                        "lat": 48.020799,
+                        "lng": 6.985628,
+                        "activite": 0.05,
+                        "position_relative": 50,
+                        "altitude" : 500,
+                        "direction" : 230,
+                        "force_signal": 1.4,
+                        "voltage_batterie" : 3000,
+                        "temperature" : 27,
+                        "nb_tag": null,
+                        "distance" : null,
+                        "timezone": "+0000",
+                        "X" : 2.2,
+                        "Y" : 3.0,
+                        "Z" : 2.7,
+                        "delta_coords" : 1,
+                        "delta_time" : 5.0,
+                        "geofencing": [
+                          {
+                            "id": "64e6533944a5031fbf29c740",
+                            "name": "Zone-vache",
+                            "userId": "64e4f1bf75586ad93ad05ecd",
+                            "crossingDistance": 20,
+                            "intersection_position": false,
+                            "intersection_marge": false
+                          }
+                        ]
+                      },
+                      {
+                        "date_heure": "2023-08-24 10:52:01",
+                        "name" : null,
+                        "type": "Tracker",
+                        "sn": "535055",
+                        "iccid": "89410122279704439122",
+                        "mac_address": null,
+                        "lat": 46.19,
+                        "lng": 6.95,
+                        "activite": 0.0,
+                        "position_relative": 50,
+                        "altitude" : 500,
+                        "direction" : 230,
+                        "force_signal": 1.4,
+                        "voltage_batterie" : 3000,
+                        "temperature" : 27,
+                        "nb_tag" : 1,
+                        "distance" : null,
+                        "timezone": "+0000",
+                        "X" : 1.13,
+                        "Y" : 0.81,
+                        "Z" : 1.16,
+                        "delta_coords" : 0,
+                        "delta_time" : 13.2,
+                        "geofencing": [
+                          {
+                            "id": "64e6533944a5031fbf29c740",
+                            "name": "Zone-vache",
+                            "userId": "64e4f1bf75586ad93ad05ecd",
+                            "crossingDistance": 20,
+                            "intersection_position": false,
+                            "intersection_marge": false
+                          }
+                        ]
+                      }
+                    ];
+
+                var jsonDisplay = document.getElementById("json-display");
+                var jsonString = JSON.stringify(jsonData, null, 4);
+
+                // Afficher les données JSON dans la balise <pre>
+                jsonDisplay.textContent = jsonString;
+            </script>
+
+        </div>
+
+        <div class="row"  style="height: 2600px;">
+            <div id="container-json">
+                <h3>Telemetry</h3>
+                <h6>Ici, L'API devrait être configurée avec la méthode POST.</h6>
+                <h6>Données JSON renvoyées par le webhook telemetry.</h6>
+                <pre id="json-display2"></pre>
+            </div>
+
+            <script>
+                // Exemple de données JSON
+                var jsonData = [{'all_date_heure': '2024-05-28 05:31:21', 'all_type': 'Tracker', 'all_lat': 55.0216548, 'all_lng': 19.0216548, 'tracker_reason': 'Tag Data', 'tracker_delay': 17352891.0, 'tracker_sn': 'S-TRACKER-001', 'tracker_gps_age': null, 'tracker_speed': null, 'tracker_used_speed_limit': null, 'tracker_speed_band': null, 'tracker_local_speed_limit': null, 'tracker_speed_acc': null, 'tracker_heading_degrees': null, 'tracker_alt': 8825.0, 'tracker_pos_acc': null, 'tracker_pdop': null, 'tracker_gps_fix_ok': 'true', 'tracker_gps_fix_3d': 'true', 'tracker_din': 2.0, 'tracker_dout': 0.0, 'tracker_driver_id': null, 'tracker_trip_type_code': null, 'tracker_project_code': null, 'tracker_analog1': 5.4, 'tracker_analog2': null, 'tracker_analog3': 16.0, 'tracker_analog4': 8.0, 'tracker_analog5': 5378.0, 'tracker_analog6': null, 'tracker_analog7': null, 'tracker_analog8': null, 'tracker_analog9': null, 'tracker_analog10': null, 'tracker_analog11': null, 'tracker_analog12': null, 'tracker_analog13': null, 'tracker_analog14': null, 'tracker_analog15': null, 'tracker_analog16': null, 'tracker_analog17': null, 'tracker_analog18': null, 'tracker_analog19': null, 'tracker_analog20': null, 'tag_mac_address': null, 'tag_gateway': 'S-TRACKER-001', 'tag_gateway_pos_acc': null, 'tag_gateway_speed': null, 'tag_status': null, 'tag_battery_voltage': null, 'tag_rssi': null, 'tag_tx_power': null, 'tag_x_acc': null, 'tag_y_acc': null, 'tag_z_acc': null, 'timezone': '+0000'}, {'all_date_heure': '2024-05-28 05:31:21', 'all_type': 'Tag', 'all_lat': 55.0216548, 'all_lng': 19.0216548, 'tracker_reason': 'Tag Data', 'tracker_delay': 17352891.0, 'tracker_sn': 'S-TRACKER-001', 'tracker_gps_age': null, 'tracker_speed': null, 'tracker_used_speed_limit': null, 'tracker_speed_band': null, 'tracker_local_speed_limit': null, 'tracker_speed_acc': null, 'tracker_heading_degrees': null, 'tracker_alt': 8825.0, 'tracker_pos_acc': null, 'tracker_pdop': null, 'tracker_gps_fix_ok': 'true', 'tracker_gps_fix_3d': 'true', 'tracker_din': 2.0, 'tracker_dout': 0.0, 'tracker_driver_id': null, 'tracker_trip_type_code': null, 'tracker_project_code': null, 'tracker_analog1': 5.4, 'tracker_analog2': null, 'tracker_analog3': 16.0, 'tracker_analog4': 8.0, 'tracker_analog5': 5378.0, 'tracker_analog6': null, 'tracker_analog7': null, 'tracker_analog8': null, 'tracker_analog9': null, 'tracker_analog10': null, 'tracker_analog11': null, 'tracker_analog12': null, 'tracker_analog13': null, 'tracker_analog14': null, 'tracker_analog15': null, 'tracker_analog16': null, 'tracker_analog17': null, 'tracker_analog18': null, 'tracker_analog19': null, 'tracker_analog20': null, 'tag_mac_address': 'D1:9D:43:E2:98:42', 'tag_gateway': 'S-TRACKER-001', 'tag_gateway_pos_acc': null, 'tag_gateway_speed': null, 'tag_status': 'Update', 'tag_battery_voltage': null, 'tag_rssi': -75.0, 'tag_tx_power': 0.0, 'tag_x_acc': 0.774, 'tag_y_acc': -0.107, 'tag_z_acc': 0.61, 'timezone': '+0000'}
+                    ];
+
+                var jsonDisplay = document.getElementById("json-display2");
+                var jsonString = JSON.stringify(jsonData, null, 4);
+
+                // Afficher les données JSON dans la balise <pre>
+                jsonDisplay.textContent = jsonString;
+            </script>
+
+        </div>
+
+        </div><!-- end left -->
+        <div class="col-md-6">
+            <div class="row" style="border-radius: 10px;height: 1600px;">
+            <div id="container-json" class="">
+                <h3>Geofencing</h3>
+                <h6>Ici, L'API devrait être configurée avec la méthode GET.</h6>
+                <h6>Données JSON attendues.</h6>
+                <pre id="json-display1"></pre>
+            </div>
+
+            <script>
+                // Exemple de données JSON
+                var jsonData = [{
+                  "coordinates": [
+                    {
+                      "order": 1,
+                      "latitude": 37.78379442578297,
+                      "longitude": -122.4558076635003
+                    },
+                    {
+                      "order": 2,
+                      "latitude": 37.7832321398541,
+                      "longitude": -122.4342370033264
+                    },
+                    {
+                      "order": 3,
+                      "latitude": 37.76466900358004,
+                      "longitude": -122.4364887177944
+                    },
+                    {
+                      "order": 4,
+                      "latitude": 37.76963846369145,
+                      "longitude": -122.4561630561948
+                    },
+                    {
+                      "order": 5,
+                      "latitude": 37.77857443543847,
+                      "longitude": -122.4719854071736
+                    },
+                    {
+                      "order": 6,
+                      "latitude": 37.79266456941215,
+                      "longitude": -122.473585344851
+                    }
+                  ],
+                  "activationTimes": [
+                    {
+                      "start": "2023-08-23T18:24:42.286Z",
+                      "end": "2023-08-23T18:24:42.286Z"
+                    }
+                  ],
+                  "id": "64e6533944a5031fbf29c740",
+                  "name": "Zone-vache",
+                  "crossingDistance": 20,
+                  "isShared": true,
+                  "userId": "64e4f1bf75586ad93ad05ecd",
+                  "createdAt": "2023-08-23T18:43:05.365Z",
+                  "updatedAt": "2023-08-23T18:43:05.365Z"
+                }
+                ];
+
+                var jsonDisplay = document.getElementById("json-display1");
+                var jsonString = JSON.stringify(jsonData, null, 4);
+
+                // Afficher les données JSON dans la balise <pre>
+                jsonDisplay.textContent = jsonString;
+            </script>
+
+        </div>
+
+        <div class="row" style="border-radius: 10px;height: 2600px;">
+            <div id="container-json" class="">
+                <h3>Analyses</h3>
+                <h6>Ici, L'API devrait être configurée avec la méthode POST.</h6>
+                <h6>Données JSON renvoyées par le webhook analyses.</h6>
+                <pre id="json-display3"></pre>
+            </div>
+
+            <script>
+                // Exemple de données JSON
+                var jsonData = {'individualBase': {'general': {'deniveleAverageDaily': 2750.5, 'distanceAverageDaily': 0.0}, 'diurnal': {'deniveleAverageDaily': 2750.5, 'distanceAverageDaily': 0.0}, 'nocturnal': {'deniveleAverageDaily': null, 'distanceAverageDaily': null}}, 'dailyPerformance': {'altitudeAverage': 3005.8636363636365, 'altitudeMin': 824.0, 'altitudeMax': 5825.0, 'temperatureAverage': 16.0, 'temperatureMax': 16.0, 'temperatureMin': 16.0, 'denivelePositive': 5001.0, 'distanceTraveled': 0.00295452570143757, 'distanceTraveledDiurnal': 0.0, 'distanceTraveledNocturnal': null, 'indexTHIPersonal': 15.802, 'deniveleDiurnal': 5001.0, 'deniveleNocturnal': 5001.0, 'energyExpenseGeneral': 1.4397120575884822e-06, 'energyExpenseDiurnal': 2.0303631581376035e-06, 'energyExpenseNocturnal': null, 'extraordinaryNocturnal': null, 'dangerNocturnal': null, 'extraordinaryDiurnal': null, 'dangerDiurnal': null}, 'localWeather': {'precipitation': 5.13, 'cloudCover': 8.5, 'temperatureMax': 24.9, 'temperatureMin': 12.8, 'humidityLevel': 76, 'WindSpeedMax': 28.8, 'pressure': null, 'lunarCycle': null, 'indexTHI': 23.527199999999997}}
+                ;
+
+                var jsonDisplay = document.getElementById("json-display3");
+                var jsonString = JSON.stringify(jsonData, null, 4);
+
+                // Afficher les données JSON dans la balise <pre>
+                jsonDisplay.textContent = jsonString;
+            </script>
+
+        </div>
+
+        </div><!-- end right -->
+
+    </div><!-- end row docs-->
+
+
+
+</div>
+
+
+
+
+            <footer>
+                
+            </footer>
+        </div>
+    </div>
+
+    <div class="row" id="message-box">
+                        <div class="col-12 col-md-3 position-absolute bottom-0 left-0">
+                            {% if messages %}
+                            {% for message in messages %}
+                            
+                            <div class="alert alert-info  alert-dismissible fade show">
+                            
+                                <span style="color:white;font-size: 12px; text-transform: uppercase;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+                            
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+    </div><!-- end row message -->
+
+    <div class="container mt-5">
+        
+
+        <!-- Modal -->
+        <div class="modal fade" id="api-webhook" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+            <div class="modal-dialog"  style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-default">
+                        <h5 class="modal-title" id="exampleModalLabel">Webhook</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'sv_webhook' %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+                        
+                        
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_wh">
+                                                <option value="TEST1"> TEST1 </option>
+                                                <option value="TEST2"> TEST2 </option>
+                                                <option value="STAGING"> STAGING </option>
+                                                <option value="PREPROD"> PREPROD </option>
+                                                <option value="PROD"> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_wh">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_wh"  required>
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_wh">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_wh">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_wh" checked>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_wh">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_wh">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_wh">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_wh">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_wh">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_wh">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_wh">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_wh">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+    </div>
+
+
+    <!-- Modal -->
+        <div class="modal fade" id="api-geofencing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog"   style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title" id="api-exampleModalLabel">Geofencing</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'sv_geofencing' %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+                        
+                        
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_gf">
+                                                <option value="TEST1"> TEST1 </option>
+                                                <option value="TEST2"> TEST2 </option>
+                                                <option value="STAGING"> STAGING </option>
+                                                <option value="PREPROD"> PREPROD </option>
+                                                <option value="PROD"> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+                         <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_gf" required>
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_gf">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_gf"  required>
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_gf">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_gf">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_gf" checked>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_gf">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_gf">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_gf">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_gf">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_gf">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_gf">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_gf">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_gf">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal -->
+
+
+    <!-- Modal -->
+        <div class="modal fade" id="api-telemetry" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog"   style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title" id="api-exampleModalLabel">Telemetry</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'sv_telemetry' %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+                        
+                        
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_tel">
+                                                <option value="TEST1"> TEST1 </option>
+                                                <option value="TEST2"> TEST2 </option>
+                                                <option value="STAGING"> STAGING </option>
+                                                <option value="PREPROD"> PREPROD </option>
+                                                <option value="PROD"> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+                         <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_tel" required>
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_tel">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_tel"  required>
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_tel">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_tel">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_tel" checked>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_tel">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_tel">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_tel">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_tel">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_tel">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_tel">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_tel">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_tel">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal telmetry -->
+
+
+    <!-- Modal -->
+        <div class="modal fade" id="api-analysis" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog"   style="min-width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title" id="api-exampleModalLabel">Analyses</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form  action="{% url 'sv_analysis' %}" method="post">
+                        {% csrf_token %}
+                    <div class="modal-body" >
+
+                        
+                        
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Environnement</span>
+                                            </div>
+                                            <select aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="env_ana">
+                                                <option value="TEST1"> TEST1 </option>
+                                                <option value="TEST2"> TEST2 </option>
+                                                <option value="STAGING"> STAGING </option>
+                                                <option value="PREPROD"> PREPROD </option>
+                                                <option value="PROD"> PROD </option>
+                                            </select>
+
+                                            <!--<input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_wh"  required>-->
+                                            
+                                        </div>
+                        </fieldset>
+                         <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Name</span>
+                                            </div>
+                                            <input type="text" aria-label="Name" class="form-control"
+                                                placeholder="api-back" name="name_ana" required>
+                                            
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            <input type="text" aria-label="Description" class="form-control"
+                                                placeholder="receive data"  name="description_ana">
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Url</span>
+                                            </div>
+                                            <input type="text" aria-label="Url" class="form-control"
+                                                placeholder="http://domaine:port/endpoint"  name="url_ana"  required>
+                                        </div>
+                        </fieldset>
+                        <div class="row">&nbsp;</div>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Accès</span>
+                                            </div>
+                                            <input type="text" aria-label="Login" class="form-control"
+                                                placeholder="Login"  name="login_ana">
+
+                                            <input type="text" aria-label="Mot de passe" class="form-control"
+                                                placeholder="Mot de passe"  name="pwd_ana">
+                                        </div>
+                        </fieldset>
+
+                        <div class="row">&nbsp;</div>
+
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"  name="status_ana" checked>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Status (Active/Inactive)</label>
+                        </div>
+
+                        <div class="row">&nbsp;</div>
+
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk1_ana">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv1_ana">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk2_ana">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv2_ana">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk3_ana">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv3_ana">
+                                        </div>
+                        </fieldset>
+                        <fieldset>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Headers</span>
+                                            </div>
+                                            <input type="text" aria-label="Key" class="form-control"
+                                                placeholder="key"  name="hk4_ana">
+
+                                            <input type="text" aria-label="Value" class="form-control"
+                                                placeholder="value"  name="hv4_ana">
+                                        </div>
+                        </fieldset>
+                    
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+                        <input class="btn btn-primary" type="submit" value="Enregistrer">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- end Modal analysis-->
+
+
+
+    </div>
+
+
+
+
+    <!-- Inclure les scripts JavaScript de Bootstrap -->
+    <script src="{% static 'webhook/js/add/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'webhook/js/add/popper.min.js' %}"></script>
+    <script src="{% static 'webhook/js/add/bootstrap.min.js' %}"></script>
+    <script src="{% static 'webhook/js/bootstrap.js' %}"></script>
+    <script src="{% static 'webhook/js/app.js' %}"></script>
+    
+    <script src="{% static 'webhook/extensions/simple-datatables/umd/simple-datatables.js' %}"></script>
+    <script src="{% static 'webhook/js/pages/simple-datatables.js' %}"></script>
+
+<script>
+    // Récupérez l'élément par son ID
+    var messageElement = document.getElementById('message-box');
+
+    // Affichez l'élément
+    messageElement.style.display = 'block';
+
+    // Définissez une durée en millisecondes pendant laquelle l'élément sera affiché (par exemple, 3000 ms pour 3 secondes)
+    var displayDuration = 5000;
+
+    // Masquez l'élément après la durée spécifiée
+    setTimeout(function() {
+        messageElement.style.display = 'none';
+    }, displayDuration);
+</script>
+
+<style>
+
+
+        #container-json {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            min-height: 1400px;
+        }
+
+        h6 {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        pre {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+    </style>
+
+</body>
+</html>
