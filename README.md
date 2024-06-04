@@ -16,6 +16,7 @@ Dans le cadre de ce projet, on travail dans la section numéro 2 du workflow gé
 ## Réception des Données Brutes via Webhook de Digital Matter :
 
 Digital Matter offre une webhook pour recevoir les données brutes provenant des trackers GPS. Ces données incluent les informations de localisation et d'autres metriques des animaux suivis.
+
 ![Aperçu du projet](images/fournisseur.png)
 
 
@@ -25,6 +26,7 @@ Une API capable de recevoir ces données brutes. Cette API effectue plusieurs op
 Transformation des données pour les rendre exploitables.
 Calcul de diverses métriques pertinentes.
 Analyse approfondie des données pour obtenir des informations significatives.
+
 ![Aperçu du projet](images/api.png)
 
 ## Proposition d'un Webhook pour la Surveillance en Temps Réel :
@@ -33,6 +35,7 @@ Afin de fournir des données de surveillance en temps réel, j'ai mis en place u
 Données de Surveillance : Informations en temps réel sur la localisation  des animaux.
 Données d'Activité des Animaux : Détails sur les mouvements, les distances parcourues, et d'autres métriques.
 Données d'Analyse : Calculs avancés tels que la distance totale parcourue, les variations d'altitude (dénivelé), l'indice de température et d'humidité (THI), etc.
+
 ![Aperçu du projet](images/add-api.PNG)
 
 
