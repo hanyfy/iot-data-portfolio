@@ -43,8 +43,8 @@ Données d'Analyse : Calculs avancés tels que la distance totale parcourue, les
 - Collecte et analyse des données de santé
 - Webhook pour les données surveillance et d'activités en temps réel des animaux
 - Webhook pour les données d'analyses
-- Interface utilisateur intuitive pour mettre les api qui recoivent les données
-
+- Interface utilisateur intuitive pour mettre les api qui vont recevoir les données
+- **Intégration Facile** : Ce webhook est conçue pour être facilement intégrée.
 
 ## Outils et Technologies
 Le projet utilise les technologies et outils suivants :
