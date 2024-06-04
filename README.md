@@ -188,7 +188,7 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
     cd iot-data-portfolio/source
     ```
 
-3. Installez les dépendances :
+3. Run :
     ```bash
     docker-compose up --build
     ```
