@@ -15,6 +15,7 @@ Dans le cadre de notre projet, on travail dans la section numéro 2 du workflow 
 - Collecte et analyse des données de santé
 - Données pour surveillance en temps réel des animaux
 - Données d'activités des animaux  pour surveillance de l'état de santé et aussi pour des fonctionalités de notification et alertes en cas d'anomalies
+- Données d'analyse des animaux
 - Interface utilisateur intuitive webhook pour la gestion des api qui récupère les données
 
 ## Outils et Technologies
@@ -26,7 +27,7 @@ Le projet utilise les technologies et outils suivants :
 - **Conteneurisation** : Docker
 - **Plateforme de télématique** : Digital Matter, Oem server, Telematics Guru
 
-## Format des données de surveillance des appareils
+## Format de données
 ```
 [
     {
@@ -86,69 +87,11 @@ Le projet utilise les technologies et outils suivants :
         "tag_y_acc": null,
         "tag_z_acc": null,
         "timezone": "+0000"
-    },
-    {
-        "all_date_heure": "2024-05-28 05:31:21",
-        "all_type": "Tag",
-        "all_lat": 55.0216548,
-        "all_lng": 19.0216548,
-        "tracker_reason": "Tag Data",
-        "tracker_delay": 17352891,
-        "tracker_sn": "S-TRACKER-001",
-        "tracker_gps_age": null,
-        "tracker_speed": null,
-        "tracker_used_speed_limit": null,
-        "tracker_speed_band": null,
-        "tracker_local_speed_limit": null,
-        "tracker_speed_acc": null,
-        "tracker_heading_degrees": null,
-        "tracker_alt": 8825,
-        "tracker_pos_acc": null,
-        "tracker_pdop": null,
-        "tracker_gps_fix_ok": "true",
-        "tracker_gps_fix_3d": "true",
-        "tracker_din": 2,
-        "tracker_dout": 0,
-        "tracker_driver_id": null,
-        "tracker_trip_type_code": null,
-        "tracker_project_code": null,
-        "tracker_analog1": 5.4,
-        "tracker_analog2": null,
-        "tracker_analog3": 16,
-        "tracker_analog4": 8,
-        "tracker_analog5": 5378,
-        "tracker_analog6": null,
-        "tracker_analog7": null,
-        "tracker_analog8": null,
-        "tracker_analog9": null,
-        "tracker_analog10": null,
-        "tracker_analog11": null,
-        "tracker_analog12": null,
-        "tracker_analog13": null,
-        "tracker_analog14": null,
-        "tracker_analog15": null,
-        "tracker_analog16": null,
-        "tracker_analog17": null,
-        "tracker_analog18": null,
-        "tracker_analog19": null,
-        "tracker_analog20": null,
-        "tag_mac_address": "D1:9D:43:E2:98:42",
-        "tag_gateway": "S-TRACKER-001",
-        "tag_gateway_pos_acc": null,
-        "tag_gateway_speed": null,
-        "tag_status": "Update",
-        "tag_battery_voltage": null,
-        "tag_rssi": -75,
-        "tag_tx_power": 0,
-        "tag_x_acc": 0.774,
-        "tag_y_acc": -0.107,
-        "tag_z_acc": 0.61,
-        "timezone": "+0000"
     }
 ]
 ```
 
-## Format des données analyse des appareils
+## Format de données analyse
 ```
 [
     {
@@ -183,11 +126,7 @@ Le projet utilise les technologies et outils suivants :
                 "deniveleNocturnal": 5001,
                 "energyExpenseGeneral": 0.0000014397120575884822,
                 "energyExpenseDiurnal": 0.0000020303631581376035,
-                "energyExpenseNocturnal": null,
-                "extraordinaryNocturnal": null,
-                "dangerNocturnal": null,
-                "extraordinaryDiurnal": null,
-                "dangerDiurnal": null
+                "energyExpenseNocturnal": null
             },
             "localWeather": {
                 "precipitation": 5.13,
