@@ -1,27 +1,30 @@
-# iot-data-portfolio
-Une solution innovante d'Internet des Objets (IoT) pour surveiller les animaux et leur état de santé
+# iot-data-pipeline
+Une solution de pipeline de données d'Internet des Objets (IoT) pour surveiller les animaux et leur état de santé
 
-# Portfolio IoT Project
+# Workflow général
 
 ![Aperçu du projet](images/flow.png)
 
 ## Description
-Ce projet IoT est une solution innovante d'Internet des Objets (IoT) conçue pour connecter et surveiller les animaux ainsi que leur état de santé. Le système permet de suivre en temps réel diverses données et d'assurer une gestion efficace de la santé animale.
+Ce projet IoT est une solution de pipeline de données d'Internet des Objets (IoT) conçue pour connecter et surveiller les animaux ainsi que leur état de santé. Le système permet fournir des diverses données en temps réel  et d'assurer une gestion efficace de la santé animale.
+Dans le cadre de notre projet, on travail dans la section numéro 2 du workflow général
+
+![Aperçu du projet](images/flow_project.png)
 
 ## Fonctionnalités
-- Surveillance en temps réel de l'état de santé des animaux
+- Données pour surveillance en temps réel de l'état de santé des animaux
 - Collecte et analyse des données de santé
-- Notifications et alertes en cas d'anomalies
-- Interface utilisateur intuitive pour la gestion et le suivi
+- Données d'activité pour des fonctionalités de notification et alertes en cas d'anomalies
+- Interface utilisateur intuitive webhook pour la gestion des api qui récupère les données
 
 ## Outils et Technologies
 Le projet utilise les technologies et outils suivants :
-- **Langages de programmation** : Python, JavaScript, HTML
-- **Frameworks et bibliothèques** : Django
-- **Bases de données** : MongoDB, PostgreSQL, SQL
+- **Langages de programmation** : Python, JavaScript, HTML, css
+- **Frameworks et bibliothèques** : Fastapi, Django, jquery, datatable, bootstrap shapely 
+- **Bases de données** : PostgreSQL, SQL
 - **Formats de données** : JSON, JWT
 - **Conteneurisation** : Docker
-- **Plateforme de télématique** : Telematics Guru
+- **Plateforme de télématique** : Digital Matter, Oem server, Telematics Guru
 
 ## Installation
 Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci-dessous :
