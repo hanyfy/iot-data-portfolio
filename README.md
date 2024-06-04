@@ -12,9 +12,9 @@ Dans le cadre de notre projet, on travail dans la section numéro 2 du workflow 
 ![Aperçu du projet](images/flow_project.png)
 
 ## Fonctionnalités
-- Données pour surveillance en temps réel de l'état de santé des animaux
 - Collecte et analyse des données de santé
-- Données d'activité pour des fonctionalités de notification et alertes en cas d'anomalies
+- Données pour surveillance en temps réel des animaux
+- Données d'activités des animaux  pour surveillance de l'état de santé et aussi pour des fonctionalités de notification et alertes en cas d'anomalies
 - Interface utilisateur intuitive webhook pour la gestion des api qui récupère les données
 
 ## Outils et Technologies
@@ -31,42 +31,42 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
 
 1. Clonez le dépôt :
     ```bash
-    git clone https://github.com/votre-utilisateur/votre-repo.git
+    git clone -b main --depth=1  https://github.com/hanyfy/iot-data-portfolio.git
     ```
 
 2. Accédez au répertoire du projet :
     ```bash
-    cd votre-repo
+    cd iot-data-portfolio/source
     ```
 
 3. Installez les dépendances :
     ```bash
-    pip install -r requirements.txt
+    docker-compose up --build
     ```
 
-4. Configurez les bases de données (MongoDB et PostgreSQL) et mettez à jour les paramètres de connexion dans les fichiers de configuration.
+4. Installer les tables du base de données (PostgreSQL).
+    Se connecter sur la base de données avec PgAdmin v4 
+        POSTGRES_HOST=localhost
+        POSTGRES_PORT=5432
+        POSTGRES_USER=root
+        POSTGRES_PASSWORD=F7wB2nK9v
+    Exécuter les fichiers sql    
+        BDD/iot_table.sql
+        BDD/iot_table_v2.sql
 
-5. Exécutez les migrations de la base de données :
-    ```bash
-    python manage.py migrate
-    ```
+5. Mettez à jour les paramètres de connexion dans les fichiers de configuration.
+    API/config/config.json
 
-6. Lancez l'application :
-    ```bash
-    python manage.py runserver
-    ```
 
-7. Accédez à l'application via votre navigateur à l'adresse :
+8. Accédez à l'application via votre navigateur à l'adresse :
     ```
-    http://127.0.0.1:8000
+    http://127.0.0.1:8086/docs (pour la documentation de l'api)
+    http://127.0.0.1:8085 (pour l'ihm de webhook)
     ```
 
 ## Utilisation
-1. Inscrivez-vous et connectez-vous à l'application.
-2. Ajoutez les informations de vos animaux.
-3. Configurez les capteurs IoT pour collecter les données de santé.
-4. Surveillez l'état de santé des animaux en temps réel via le tableau de bord.
-5. Recevez des notifications en cas d'anomalies ou de problèmes de santé.
+1. creer-vous un acces utilisateur sur django et connectez-vous à l'application webhook.
+3. Configurez votre api qui recoit les données à l'application webhook.
 
 ## Contribution
 Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez créer une branche à partir de `main`, apporter vos modifications, puis soumettre une pull request.
@@ -75,6 +75,6 @@ Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez c
 Ce projet est sous licence MIT. Pour plus de détails, veuillez consulter le fichier `LICENSE`.
 
 ## Auteurs
-- [Votre Nom](https://github.com/votre-utilisateur)
-
+- [Votre Nom](https://github.com/hanyfy)
+ramamonjisoafy@gmail.com
 Merci de votre intérêt pour ce projet ! N'hésitez pas à me contacter pour toute question ou suggestion.
