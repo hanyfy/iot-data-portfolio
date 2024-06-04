@@ -12,14 +12,14 @@ Dans le cadre de ce projet, on travail dans la section numéro 2 du workflow gé
 
 ![Aperçu du projet](images/flow_project.png)
 
-## Les Étapes Clés:
-# Réception des Données Brutes via Webhook de Digital Matter :
+# Les Étapes Clés:
+## Réception des Données Brutes via Webhook de Digital Matter :
 
 Digital Matter offre une webhook pour recevoir les données brutes provenant des trackers GPS. Ces données incluent les informations de localisation et d'autres metriques des animaux suivis.
 ![Aperçu du projet](images/fournisseur.png)
 
 
-# Création d'une API de Traitement des Données :
+## Création d'une API de Traitement des Données :
 
 Une API capable de recevoir ces données brutes. Cette API effectue plusieurs opérations :
 Transformation des données pour les rendre exploitables.
@@ -27,7 +27,7 @@ Calcul de diverses métriques pertinentes.
 Analyse approfondie des données pour obtenir des informations significatives.
 ![Aperçu du projet](images/api.png)
 
-# Proposition d'un Webhook pour la Surveillance en Temps Réel :
+## Proposition d'un Webhook pour la Surveillance en Temps Réel :
 
 Afin de fournir des données de surveillance en temps réel, j'ai mis en place un webhook qui transmet ces informations transformées et analysées à d'autres systèmes ou applications. Les données envoyées incluent :
 Données de Surveillance : Informations en temps réel sur la localisation  des animaux.
@@ -52,7 +52,8 @@ Le projet utilise les technologies et outils suivants :
 - **Conteneurisation** : Docker
 - **Plateforme de télématique** : Digital Matter, Oem server, Telematics Guru
 
-## Format de données
+
+## Format de données surveillance
 ```
 [
     {
