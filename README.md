@@ -65,8 +65,9 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
     ```
 
 ## Utilisation
-1. creer-vous un acces utilisateur sur django et connectez-vous à l'application webhook.
+1. Creer-vous un acces utilisateur sur django et connectez-vous à l'application webhook.
 3. Configurez votre api qui recoit les données à l'application webhook.
+![Aperçu du projet](images/0-ihm.PNG)
 
 ## Contribution
 Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez créer une branche à partir de `main`, apporter vos modifications, puis soumettre une pull request.
