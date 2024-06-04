@@ -45,6 +45,7 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
     ```
 
 4. Installer les tables du base de données (PostgreSQL).
+    ```
     Se connecter sur la base de données avec PgAdmin v4 
         POSTGRES_HOST=localhost
         POSTGRES_PORT=5432
@@ -53,7 +54,7 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
     Exécuter les fichiers sql    
         BDD/iot_table.sql
         BDD/iot_table_v2.sql
-
+    ```    
 5. Mettez à jour les paramètres de connexion dans les fichiers de configuration.
     API/config/config.json
 
