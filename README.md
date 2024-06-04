@@ -77,6 +77,7 @@ Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez c
 Ce projet est sous licence MIT. Pour plus de détails, veuillez consulter le fichier `LICENSE`.
 
 ## Auteurs
-- [Votre Nom](https://github.com/hanyfy)
-ramamonjisoafy@gmail.com
+- [RAMAMONJISOA Nomenjanahary Hany Fy](https://github.com/hanyfy)
+- [ramamonjisoafy@gmail.com](https://github.com/hanyfy)
+
 Merci de votre intérêt pour ce projet ! N'hésitez pas à me contacter pour toute question ou suggestion.
