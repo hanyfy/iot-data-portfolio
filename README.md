@@ -26,6 +26,186 @@ Le projet utilise les technologies et outils suivants :
 - **Conteneurisation** : Docker
 - **Plateforme de télématique** : Digital Matter, Oem server, Telematics Guru
 
+## Format des données de surveillance des appareils
+```
+[
+    {
+        "all_date_heure": "2024-05-28 05:31:21",
+        "all_type": "Tracker",
+        "all_lat": 55.0216548,
+        "all_lng": 19.0216548,
+        "tracker_reason": "Tag Data",
+        "tracker_delay": 17352891,
+        "tracker_sn": "S-TRACKER-001",
+        "tracker_gps_age": null,
+        "tracker_speed": null,
+        "tracker_used_speed_limit": null,
+        "tracker_speed_band": null,
+        "tracker_local_speed_limit": null,
+        "tracker_speed_acc": null,
+        "tracker_heading_degrees": null,
+        "tracker_alt": 8825,
+        "tracker_pos_acc": null,
+        "tracker_pdop": null,
+        "tracker_gps_fix_ok": "true",
+        "tracker_gps_fix_3d": "true",
+        "tracker_din": 2,
+        "tracker_dout": 0,
+        "tracker_driver_id": null,
+        "tracker_trip_type_code": null,
+        "tracker_project_code": null,
+        "tracker_analog1": 5.4,
+        "tracker_analog2": null,
+        "tracker_analog3": 16,
+        "tracker_analog4": 8,
+        "tracker_analog5": 5378,
+        "tracker_analog6": null,
+        "tracker_analog7": null,
+        "tracker_analog8": null,
+        "tracker_analog9": null,
+        "tracker_analog10": null,
+        "tracker_analog11": null,
+        "tracker_analog12": null,
+        "tracker_analog13": null,
+        "tracker_analog14": null,
+        "tracker_analog15": null,
+        "tracker_analog16": null,
+        "tracker_analog17": null,
+        "tracker_analog18": null,
+        "tracker_analog19": null,
+        "tracker_analog20": null,
+        "tag_mac_address": null,
+        "tag_gateway": "S-TRACKER-001",
+        "tag_gateway_pos_acc": null,
+        "tag_gateway_speed": null,
+        "tag_status": null,
+        "tag_battery_voltage": null,
+        "tag_rssi": null,
+        "tag_tx_power": null,
+        "tag_x_acc": null,
+        "tag_y_acc": null,
+        "tag_z_acc": null,
+        "timezone": "+0000"
+    },
+    {
+        "all_date_heure": "2024-05-28 05:31:21",
+        "all_type": "Tag",
+        "all_lat": 55.0216548,
+        "all_lng": 19.0216548,
+        "tracker_reason": "Tag Data",
+        "tracker_delay": 17352891,
+        "tracker_sn": "S-TRACKER-001",
+        "tracker_gps_age": null,
+        "tracker_speed": null,
+        "tracker_used_speed_limit": null,
+        "tracker_speed_band": null,
+        "tracker_local_speed_limit": null,
+        "tracker_speed_acc": null,
+        "tracker_heading_degrees": null,
+        "tracker_alt": 8825,
+        "tracker_pos_acc": null,
+        "tracker_pdop": null,
+        "tracker_gps_fix_ok": "true",
+        "tracker_gps_fix_3d": "true",
+        "tracker_din": 2,
+        "tracker_dout": 0,
+        "tracker_driver_id": null,
+        "tracker_trip_type_code": null,
+        "tracker_project_code": null,
+        "tracker_analog1": 5.4,
+        "tracker_analog2": null,
+        "tracker_analog3": 16,
+        "tracker_analog4": 8,
+        "tracker_analog5": 5378,
+        "tracker_analog6": null,
+        "tracker_analog7": null,
+        "tracker_analog8": null,
+        "tracker_analog9": null,
+        "tracker_analog10": null,
+        "tracker_analog11": null,
+        "tracker_analog12": null,
+        "tracker_analog13": null,
+        "tracker_analog14": null,
+        "tracker_analog15": null,
+        "tracker_analog16": null,
+        "tracker_analog17": null,
+        "tracker_analog18": null,
+        "tracker_analog19": null,
+        "tracker_analog20": null,
+        "tag_mac_address": "D1:9D:43:E2:98:42",
+        "tag_gateway": "S-TRACKER-001",
+        "tag_gateway_pos_acc": null,
+        "tag_gateway_speed": null,
+        "tag_status": "Update",
+        "tag_battery_voltage": null,
+        "tag_rssi": -75,
+        "tag_tx_power": 0,
+        "tag_x_acc": 0.774,
+        "tag_y_acc": -0.107,
+        "tag_z_acc": 0.61,
+        "timezone": "+0000"
+    }
+]
+```
+
+## Format des données analyse des appareils
+```
+[
+    {
+        "serial_id" : {
+            "individualBase": {
+                "general": {
+                    "deniveleAverageDaily": 2750.5,
+                    "distanceAverageDaily": 0
+                },
+                "diurnal": {
+                    "deniveleAverageDaily": 2750.5,
+                    "distanceAverageDaily": 0
+                },
+                "nocturnal": {
+                    "deniveleAverageDaily": null,
+                    "distanceAverageDaily": null
+                }
+            },
+            "dailyPerformance": {
+                "altitudeAverage": 3005.8636363636365,
+                "altitudeMin": 824,
+                "altitudeMax": 5825,
+                "temperatureAverage": 16,
+                "temperatureMax": 16,
+                "temperatureMin": 16,
+                "denivelePositive": 5001,
+                "distanceTraveled": 0.00295452570143757,
+                "distanceTraveledDiurnal": 0,
+                "distanceTraveledNocturnal": null,
+                "indexTHIPersonal": 15.802,
+                "deniveleDiurnal": 5001,
+                "deniveleNocturnal": 5001,
+                "energyExpenseGeneral": 0.0000014397120575884822,
+                "energyExpenseDiurnal": 0.0000020303631581376035,
+                "energyExpenseNocturnal": null,
+                "extraordinaryNocturnal": null,
+                "dangerNocturnal": null,
+                "extraordinaryDiurnal": null,
+                "dangerDiurnal": null
+            },
+            "localWeather": {
+                "precipitation": 5.13,
+                "cloudCover": 8.5,
+                "temperatureMax": 24.9,
+                "temperatureMin": 12.8,
+                "humidityLevel": 76,
+                "WindSpeedMax": 28.8,
+                "pressure": null,
+                "lunarCycle": null,
+                "indexTHI": 23.527199999999997
+            }
+        }
+    }
+]
+```
+
+
 ## Installation
 Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci-dessous :
 
@@ -69,6 +249,7 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
 1. Creer-vous un acces utilisateur sur django et connectez-vous à l'application webhook.
 3. Configurez votre api qui recoit les données à l'application webhook.
 ![Aperçu du projet](images/0-ihm.PNG)
+
 
 ## Contribution
 Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez créer une branche à partir de `main`, apporter vos modifications, puis soumettre une pull request.
