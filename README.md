@@ -204,11 +204,8 @@ Pour installer et exécuter ce projet localement, veuillez suivre les étapes ci
         BDD/iot_table.sql
         BDD/iot_table_v2.sql
     ```    
-5. Mettez à jour les paramètres de connexion dans les fichiers de configuration.
-    API/config/config.json
 
-
-8. Accédez à l'application via votre navigateur à l'adresse :
+5. Accédez à l'application via votre navigateur à l'adresse :
     ```
     http://127.0.0.1:8086/docs (pour la documentation de l'api)
     http://127.0.0.1:8085 (pour l'ihm de webhook)
