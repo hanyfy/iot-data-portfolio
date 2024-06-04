@@ -31,7 +31,7 @@ Analyse approfondie des données pour obtenir des informations significatives.
 
 ## Proposition d'un Webhook pour la Surveillance en Temps Réel :
 
-Afin de fournir des données de surveillance en temps réel, j'ai mis en place un webhook qui transmet ces informations transformées et analysées à d'autres systèmes ou applications. Les données envoyées incluent :
+Afin de fournir des données de surveillance en temps réel, on a mis en place un webhook qui transmet ces informations transformées et analysées à d'autres systèmes ou applications. Les données envoyées incluent :
 Données de Surveillance : Informations en temps réel sur la localisation  des animaux.
 Données d'Activité des Animaux : Détails sur les mouvements, les distances parcourues, et d'autres métriques.
 Données d'Analyse : Calculs avancés tels que la distance totale parcourue, les variations d'altitude (dénivelé), l'indice de température et d'humidité (THI), etc.
