@@ -6,17 +6,42 @@ Une solution de pipeline de données d'Internet des Objets (IoT) pour surveiller
 ![Aperçu du projet](images/flow.png)
 
 ## Description
-Ce projet IoT est une solution de pipeline de données d'Internet des Objets (IoT) conçue pour connecter et surveiller les animaux ainsi que leur état de santé. Le système permet fournir des diverses données en temps réel  et d'assurer une gestion efficace de la santé animale.
-Dans le cadre de notre projet, on travail dans la section numéro 2 du workflow général
+Une solution de pipeline de données d'Internet des Objets (IoT) conçue pour connecter et surveiller les animaux ainsi que leur état de santé. Le système permet fournir des diverses données en temps réel  et d'assurer une gestion efficace de la santé animale.
+Ce projet s'appuie sur la plateforme Digital Matter, qui fournit des trackers GPS spécialement conçus pour être fixés sur les animaux. Ces dispositifs permettent de recueillir des données de localisation et de mouvement précises.
+Dans le cadre de ce projet, on travail dans la section numéro 2 du workflow général
 
 ![Aperçu du projet](images/flow_project.png)
 
+## Les Étapes Clés:
+#Réception des Données Brutes via Webhook de Digital Matter :
+
+Digital Matter offre une webhook pour recevoir les données brutes provenant des trackers GPS. Ces données incluent les informations de localisation et d'autres metriques des animaux suivis.
+![Aperçu du projet](images/fournisseur.png)
+
+
+#Création d'une API de Traitement des Données :
+
+Une API capable de recevoir ces données brutes. Cette API effectue plusieurs opérations :
+Transformation des données pour les rendre exploitables.
+Calcul de diverses métriques pertinentes.
+Analyse approfondie des données pour obtenir des informations significatives.
+![Aperçu du projet](images/api.png)
+
+#Proposition d'un Webhook pour la Surveillance en Temps Réel :
+
+Afin de fournir des données de surveillance en temps réel, j'ai mis en place un webhook qui transmet ces informations transformées et analysées à d'autres systèmes ou applications. Les données envoyées incluent :
+Données de Surveillance : Informations en temps réel sur la localisation  des animaux.
+Données d'Activité des Animaux : Détails sur les mouvements, les distances parcourues, et d'autres métriques.
+Données d'Analyse : Calculs avancés tels que la distance totale parcourue, les variations d'altitude (dénivelé), l'indice de température et d'humidité (THI), etc.
+![Aperçu du projet](images/add-api.png)
+
+
 ## Fonctionnalités
 - Collecte et analyse des données de santé
-- Données pour surveillance en temps réel des animaux
-- Données d'activités des animaux  pour surveillance de l'état de santé et aussi pour des fonctionalités de notification et alertes en cas d'anomalies
-- Données d'analyse des animaux
-- Interface utilisateur intuitive webhook pour la gestion des api qui récupère les données
+- Webhook pour les données surveillance et d'activités en temps réel des animaux
+- Webhook pour les données d'analyses
+- Interface utilisateur intuitive pour mettre les api qui recoivent les données
+
 
 ## Outils et Technologies
 Le projet utilise les technologies et outils suivants :
@@ -35,6 +60,7 @@ Le projet utilise les technologies et outils suivants :
         "all_type": "Tracker",
         "all_lat": 55.0216548,
         "all_lng": 19.0216548,
+        "tracker_activity": 1,
         "tracker_reason": "Tag Data",
         "tracker_delay": 17352891,
         "tracker_sn": "S-TRACKER-001",
@@ -95,7 +121,7 @@ Le projet utilise les technologies et outils suivants :
 ```
 [
     {
-        "serial_id" : {
+        "serialNumber" : {
             "individualBase": {
                 "general": {
                     "deniveleAverageDaily": 2750.5,
